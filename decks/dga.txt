@@ -14,7 +14,7 @@
 4 Caves of Koilos
 2 City of Brass
 1 Gemstone Mine
-2 Plain
+2 Plains
 6 Swamp
 3 Tainted Field
 4 Wasteland
