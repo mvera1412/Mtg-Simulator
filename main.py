@@ -114,7 +114,7 @@ class Match:
         num = card2image(card)
         if not num:
           print(card)
-        v = mpimg.imread(num + '.jpg')
+        v = mpimg.imread('./images/' + num + '.jpg')
         axs[1,idx+1].imshow(v)
         axs[1,idx+1].axis('off')
         axs[1,idx+1].set_title(str(idx),y=-0.5)
@@ -122,7 +122,7 @@ class Match:
       axs[0,0].axis('off')
       for idx, card in enumerate(self.play):
         num = card2image(card)
-        v = mpimg.imread(num + '.jpg')
+        v = mpimg.imread('./images/' + num + '.jpg')
         axs[0,idx+1].imshow(v)
         axs[0,idx+1].axis('off')
       if nhand>nplay:
@@ -217,7 +217,7 @@ if __name__ == '__main__':
 	    for k in range(len(arr)):
 	      s = arr[k]
 	      if s[-4:]=='.txt':
-		arr2.append(arr[k])
+	        arr2.append(arr[k])
 	    m = len(arr2)
 	    l = [[k,arr2[k]] for k in range(m)]
 	    table = PrettyTable(['Idx', 'File name'])
@@ -241,17 +241,17 @@ if __name__ == '__main__':
 	    elif (x!='') and (x[0]=='p'):
 	      y = x[1:]
 	      if(y >= '0' and y < str(len(match.hand))):
-		match = match.action('play',int(y))
-		match.show()
+	        match = match.action('play',int(y))
+	        match.show()
 	      else:
-		print('Which?')
+	        print('Which?')
 	    elif (x!='') and (x[0]=='g'):
 	      y = x[1:]
 	      if(y >= '0' and y < str(len(match.play))):
-		match = match.action('discard',int(y))
-		match.show()
+	        match = match.action('discard',int(y))
+	        match.show()
 	      else:
-		print('Which?')
+	        print('Which?')
 	    elif (x!='') and (x[0]=='r'):
 	      playing = False
 	    elif (x!='') and (x[0]=='q'):
