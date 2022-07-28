@@ -108,31 +108,36 @@ class Match:
       nplay=len(self.play)
       maximo = max(nhand,nplay)
       fig, axs = plt.subplots(2,maximo+1,figsize=(15, 6))
-      axs[1,0].text(0.3, 0.5, 'Hand')
-      axs[1,0].axis('off')
-      for idx, card in enumerate(self.hand):
-        num = card2image(card)
-        if not num:
-          print(card)
-        v = mpimg.imread('./images/' + num + '.jpg')
-        axs[1,idx+1].imshow(v)
-        axs[1,idx+1].axis('off')
-        axs[1,idx+1].set_title(str(idx),y=-0.5)
-      axs[0,0].text(0.3, 0.5, 'Play')
-      axs[0,0].axis('off')
-      for idx, card in enumerate(self.play):
-        num = card2image(card)
-        v = mpimg.imread('./images/' + num + '.jpg')
-        axs[0,idx+1].imshow(v)
-        axs[0,idx+1].axis('off')
-      if nhand>nplay:
-        for idx in range(nhand-nplay):
-          axs[0,nplay+idx+1].axis('off')
+      if maximo > 0:
+          axs[1,0].text(0.3, 0.5, 'Hand')
+          axs[1,0].axis('off')
+          for idx, card in enumerate(self.hand):
+            num = card2image(card)
+            if not num:  
+              raise ValueError("No encuentro {}".format(card))
+            v = mpimg.imread('./images/' + num + '.jpg')
+            axs[1,idx+1].imshow(v)
+            axs[1,idx+1].axis('off')
+            axs[1,idx+1].set_title(str(idx),y=-0.5)
+          axs[0,0].text(0.3, 0.5, 'Play')
+          axs[0,0].axis('off')
+          for idx, card in enumerate(self.play):
+            num = card2image(card)
+            v = mpimg.imread('./images/' + num + '.jpg')
+            axs[0,idx+1].imshow(v)
+            axs[0,idx+1].axis('off')
+          if nhand>nplay:
+            for idx in range(nhand-nplay):
+              axs[0,nplay+idx+1].axis('off')
+          else:
+            for idx in range(nplay-nhand):
+              axs[1,nhand+idx+1].axis('off') 
+              axs[1,nhand+idx+1].set_title(str(nhand+idx),y=-0.5)
       else:
-        for idx in range(nplay-nhand):
-          axs[1,nhand+idx+1].axis('off') 
-          axs[1,nhand+idx+1].set_title(str(nhand+idx),y=-0.5)
-      #plt.subplots_adjust(hspace=-0.4)
+          axs[1].text(0.3, 0.5, 'Hand')
+          axs[1].axis('off')
+          axs[0].text(0.3, 0.5, 'Play')
+          axs[0].axis('off')
       plt.show()
 
 def shuffle(deck):
@@ -201,7 +206,10 @@ def start(file_name,texto):
       match.text = texto
       n_mul +=1
       match.show()
-      mulligan = keep_mulligan()
+      if n_mul>6:
+          mulligan = False
+      else:
+          mulligan = keep_mulligan()
     while n_mul+len(match.hand)>7:
       match = return_card(match)
       match.show()
