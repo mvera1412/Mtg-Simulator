@@ -130,7 +130,8 @@ class Match:
           axs[0,nplay+idx+1].axis('off')
       else:
         for idx in range(nplay-nhand):
-          axs[1,nhand+idx+1].axis('off')  
+          axs[1,nhand+idx+1].axis('off') 
+          axs[1,nhand+idx+1].set_title(str(nhand+idx),y=-0.5)
       #plt.subplots_adjust(hspace=-0.4)
       plt.show()
 
