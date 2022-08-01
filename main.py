@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import ast
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -116,7 +115,7 @@ class Match:
         for _ in range(-diff):
           aux_hand = aux_hand + [" "]
       l = [[aux_hand[k],aux_play[k]] for k in range(m)]
-      render_mpl_table(l, ['Hand','Play'], col_width=3.5, suptitle = T)
+      render_mpl_table(l, ['Hand','Play'], col_width=3.5, suptitle = T+'\n Deck: '+str(len(self.deck))+', Graveyard: '+str(len(self.graveyard)))
     else:
       nhand=len(self.hand)
       nplay=len(self.play)
@@ -275,7 +274,7 @@ def elegir_archivo(listado):
 
 def elegir_interfaz(filename):
     plt.close('all')
-    plt.figure(figsize=[0.1,0.1])
+    plt.figure(figsize=[8.5,1.2])
     plt.text(0.0, 0.0,'(I)mages or (T)ext? ', fontsize = 50)
     plt.axis('off')
     plt.show(block=False)
