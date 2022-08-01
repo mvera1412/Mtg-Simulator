@@ -1,9 +1,9 @@
+#!/usr/bin/env python
 import ast
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 import numpy as np
-from prettytable import PrettyTable
 import os
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
@@ -103,6 +103,7 @@ class Match:
 
   def show(self, T=False):
     os.system('clear') # Local
+    plt.close('all')
     if self.text:
       diff = len(self.hand)-len(self.play)
       aux_hand = self.hand
@@ -153,7 +154,7 @@ class Match:
           axs[1].axis('off')
           axs[0].text(0.3, 0.5, 'Play')
           axs[0].axis('off')
-      plt.show()
+      plt.show(block=False)
 
 def shuffle(deck):
   shuffled = np.random.permutation(len(deck))
@@ -261,24 +262,23 @@ def render_mpl_table(listado, titulos, col_width=3.0, row_height=0.625, font_siz
             cell.set_facecolor(header_color)
         else:
             cell.set_facecolor(row_colors[k[0]%len(row_colors) ])
-    plt.show() 
+    plt.show(block=False) 
 
     
 def elegir_archivo(listado):
-    lista = []
-    for rec in listado:
-        lista.append([rec])
     os.system('clear') # Local
+    plt.close('all')
     render_mpl_table(listado, 'Choose a file', col_width=2.5)
-    plt.show()
+    plt.show(block=False)
     x = input('Choose a file ')
     return x
 
 def elegir_interfaz(filename):
+    plt.close('all')
     plt.figure(figsize=[0.1,0.1])
     plt.text(0.0, 0.0,'(I)mages or (T)ext? ', fontsize = 50)
     plt.axis('off')
-    plt.show()
+    plt.show(block=False)
     x = input('(I)mages or (T)ext? ')
     return (x[0]=='t') 
 
@@ -289,6 +289,7 @@ def menu_principal():
 if __name__ == '__main__':
 	file_loaded = False
 	quit = False
+	plt.ion()
 	while not quit:
 	  while not file_loaded:
 	    arr = os.listdir('./decks/')   
@@ -333,5 +334,5 @@ if __name__ == '__main__':
 	    elif (x!='') and (x[0]=='c'):
 	      file_loaded = False
 	      playing = False
-    
+	plt.ioff()
          
