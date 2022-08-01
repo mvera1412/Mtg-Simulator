@@ -24,8 +24,10 @@ def load_dict():
 def card2image(card):
   dictionary = load_dict()
   card=card.replace("\'","")
+  card=card.replace("/","")
+  card=' '.join(card.split())
   try:
-    numero = dictionary[card]
+    numero = str(dictionary[card])
     arr = os.listdir('./images/')
     if not(numero + '.jpg' in arr):
       imagen = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+ numero +'&type=card'
@@ -121,7 +123,7 @@ class Match:
       fig, axs = plt.subplots(2,maximo+1,figsize=(15, 6))
       if maximo > 0:
           if T:
-              fig.suptitle(T,color='red')
+              fig.suptitle(T+'\n Deck: '+str(len(self.deck))+', Graveyard: '+str(len(self.graveyard)),color='red')
           axs[1,0].text(0.3, 0.5, 'Hand')
           axs[1,0].axis('off')
           for idx, card in enumerate(self.hand):
@@ -158,8 +160,11 @@ def shuffle(deck):
   return [deck[i] for i in shuffled]
 
 def change(set1,set2,idx):
-  set2.append(set1[idx])
-  set1.pop(idx) 
+  try:    
+      set2.append(set1[idx])
+      set1.pop(idx) 
+  except:
+      print('No se puede')
 
 
 def restart(file_name):
@@ -174,6 +179,10 @@ def restart(file_name):
     linea = f.readline()
   deck=[[nom[k]] * num[k] for k in range(len(num))]
   deck = [x for xs in deck for x in xs]
+  n = len(deck)
+  if n!=60:
+      print(f'Your deck has {n} cards.') 
+      _ = input ('Press any key to continue')
   deck = shuffle(deck)
   hand = []
   for _ in range(7):
