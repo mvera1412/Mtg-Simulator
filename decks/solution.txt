@@ -16,11 +16,12 @@
 1 Battlefield Forge
 3 Coastal Tower
 2 Faerie Conclave
-5 Island
+4 Island
 4 Mishra's Factory
 3 Shivan Reef
 1 Skycloud Expanse
 1 Mountain
-4 Plains
+3 Plains
+2 City of Brass
 
 
