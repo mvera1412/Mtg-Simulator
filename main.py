@@ -41,6 +41,7 @@ def card2image(card):
       name += word
       name += ']'
     web = 'https://gatherer.wizards.com/Pages/Search/Default.aspx?name=' + name
+    print(web)
     response = requests.get(web,verify = False)
     texto_web = response.text
     wh = texto_web.find('multiverseid')
