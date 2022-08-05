@@ -23,7 +23,10 @@
 1 Mountain
 3 Plains
 2 City of Brass
+<<<<<<< HEAD
 1 Ghitu Encampment
+=======
+>>>>>>> 703f6567e7a05ad15ee27483c537aa9cf0faa0d1
 
 1 Wrath of God
 1 Aura fracture

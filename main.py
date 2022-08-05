@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import time
 from copy import deepcopy
-import pandas as pd    
+import pandas as pd   
+import subprocess 
 
 def save_dict(dict):
   f = open("dict","w")
@@ -229,7 +230,7 @@ def start(file_name,texto):
       match = match.action('restart')
       match.text = texto
       n_mul +=1
-      match.show('(K)eep or (M)ulligan?')
+      match.show('(K)eep or (M)ulligan?\n Mulligan count = '+str(n_mul))
       if n_mul>6:
           mulligan = False
       else:
@@ -276,14 +277,23 @@ def elegir_archivo(listado):
 def elegir_interfaz(filename):
     plt.close('all')
     plt.figure(figsize=[8.5,1.2])
-    plt.text(0.0, 0.0,'(I)mages or (T)ext? ', fontsize = 50)
+    plt.text(0.0, 0.0,'(I)mages or (T)ext?', fontsize = 50)
     plt.axis('off')
     plt.show(block=False)
     x = input('(I)mages or (T)ext? ')
     return (x[0]=='t') 
 
+def elegir_modo(filename):
+    plt.close('all')
+    plt.figure(figsize=[8.5,1.2])
+    plt.text(0.0, 0.0,'(P)lay or (M)odify?', fontsize = 50)
+    plt.axis('off')
+    plt.show(block=False)
+    x = input('(P)lay or (M)odify? ')
+    return x[0]
+
 def menu_principal():
-    x = input('(D)raw - (P)lay - (G)raveyard - (U)ndo - (R)estart - (C)hange deck - (Q)uit ')
+    x = input('(D)raw - (P)lay - (G)raveyard - (U)ndo - (I)nterface - (R)estart - (C)hange deck - (Q)uit ')
     return x
 
 if __name__ == '__main__':
@@ -303,36 +313,45 @@ if __name__ == '__main__':
 	    x = elegir_archivo(arr2) #l
 	    if(x >= '0' and x < str(m)):
 	      file_name = arr2[int(x)]
-	      file_loaded = True 
-	  texto = elegir_interfaz(file_name) 
-	  match = start(file_name,texto)
-	  playing = True
-	  while playing:
-	    match.show('(D)raw - (P)lay - (G)raveyard - (U)ndo - (R)estart - (C)hange deck - (Q)uit')
-	    x = menu_principal()
-	    if (x!='') and (x[0]=='d'):
-	      match = match.action('draw')
-	    elif (x!='') and (x[0]=='p'):
-	      y = x[1:]
-	      if(y >= '0' and y < str(len(match.hand))):
-	        match = match.action('play',int(y))
-	      else:
-	        print('Which?')
-	    elif (x!='') and (x[0]=='g'):
-	      y = x[1:]
-	      if(y >= '0' and y < str(len(match.play))): 
-	        match = match.action('discard',int(y))
-	      else:
-	        print('Which?')
-	    elif (x!='') and (x[0]=='u'):
-	      match = match.action('undo')
-	    elif (x!='') and (x[0]=='r'):
-	      playing = False
-	    elif (x!='') and (x[0]=='q'):
-	      playing = False
-	      quit=True
-	    elif (x!='') and (x[0]=='c'):
-	      file_loaded = False
-	      playing = False
+	      file_loaded = True
+	  modo = elegir_modo(file_name)
+	  if modo =='m':
+	    subprocess.call(['sh', './modify_deck.sh',file_name])
+	  if modo == 'p' or modo == 'm':    
+	    texto = elegir_interfaz(file_name) 
+	    match = start(file_name,texto)
+	    playing = True
+	    while playing:
+	      match.show('(D)raw - (P)lay - (G)raveyard - (U)ndo - (I)nterface - (R)estart - (C)hange deck - (Q)uit')
+	      x = menu_principal()
+	      if (x!='') and (x[0]=='d'):
+	        match = match.action('draw')
+	      elif (x!='') and (x[0]=='p'):
+	        y = x[1:]
+	        if(y >= '0' and y < str(len(match.hand))):
+	          match = match.action('play',int(y))
+	        else:
+	          print('Which?')
+	      elif (x!='') and (x[0]=='g'):
+	        y = x[1:]
+	        if(y >= '0' and y < str(len(match.play))): 
+	          match = match.action('discard',int(y))
+	        else:
+	          print('Which?')
+	      elif (x!='') and (x[0]=='u'):
+	        match = match.action('undo')
+	      elif (x!='') and (x[0]=='r'):
+	        playing = False
+	      elif (x!='') and (x[0]=='q'):
+	        playing = False
+	        quit=True
+	      elif (x!='') and (x[0]=='c'):
+	        file_loaded = False
+	        playing = False
+	      elif (x!='') and (x[0]=='i'):
+	        match.text = not match.text 
+	  else:
+	    print('Te equivocaste...')
+	    time.sleep(0.5) 
 	plt.ioff()
-         
+     
